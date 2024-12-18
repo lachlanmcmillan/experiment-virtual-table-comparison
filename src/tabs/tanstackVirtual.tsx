@@ -6,18 +6,22 @@ export function TanstackVirtualTab({
   data,
   cols,
   paddingInline,
+  height,
+  rowHeight,
 }: {
   data: MockData[];
   cols: any[];
   paddingInline: number;
+  height: number;
+  rowHeight: number;
 }) {
   const parentRef = React.useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({
     count: data.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 27,
-    overscan: 20,
+    estimateSize: () => rowHeight,
+    overscan: rowHeight,
   });
 
   return (
@@ -25,14 +29,13 @@ export function TanstackVirtualTab({
       <div
         ref={parentRef}
         className="container"
-        style={{ height: 800, overflow: "auto", overscrollBehaviorY: "none" }}
+        style={{ height, overflow: "auto", overscrollBehaviorY: "none" }}
       >
         <table
           style={{
-            tableLayout: "fixed",
             height: virtualizer.getTotalSize(),
-            // width: "100%",
             position: "relative",
+            tableLayout: "fixed",
             borderCollapse: "collapse",
           }}
         >
@@ -49,7 +52,7 @@ export function TanstackVirtualTab({
                 style={{
                   width: 60,
                   minWidth: 60,
-                  height: 27,
+                  height: rowHeight,
                   textAlign: "right",
                   paddingInline,
                 }}
@@ -83,7 +86,7 @@ export function TanstackVirtualTab({
                     left: 0,
                     width: "100%",
                     height: virtualRow.size,
-                    transform: `translateY(${virtualRow.start + 27}px)`,
+                    transform: `translateY(${virtualRow.start + rowHeight}px)`,
                   }}
                 >
                   <td

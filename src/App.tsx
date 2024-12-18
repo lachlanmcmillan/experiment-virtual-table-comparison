@@ -26,11 +26,24 @@ function App() {
 
   const dataSlice = data.slice(0, parseInt(rowLimitRef.current));
 
+  const tableProps = {
+    data: dataSlice,
+    cols,
+    paddingInline: 5,
+    height: 800,
+    rowHeight: 27,
+    key: renderKey,
+  };
+
   return (
     <>
       <Box mt="lg" w="100%">
-        <Title order={1} ta="center">Virtual Table Comparison</Title>
-        <Text ta="center">This is a comparison of virtualization libraries.</Text>
+        <Title order={1} ta="center">
+          Virtual Table Comparison
+        </Title>
+        <Text ta="center">
+          This is a comparison of virtualization libraries.
+        </Text>
         <Group mt="md" justify="center">
           <Select
             defaultValue={rowLimitRef.current}
@@ -59,36 +72,16 @@ function App() {
             style={{ overflow: "auto" }}
           >
             <Tabs.Panel value="baseline">
-              <BaselineTab
-                data={dataSlice}
-                key={renderKey}
-                cols={cols}
-                paddingInline={paddingInline}
-              />
+              <BaselineTab {...tableProps} />
             </Tabs.Panel>
             <Tabs.Panel value="react-virtuoso">
-              <ReactVirtuosoTab
-                data={dataSlice}
-                key={renderKey}
-                cols={cols}
-                paddingInline={paddingInline}
-              />
+              <ReactVirtuosoTab {...tableProps} />
             </Tabs.Panel>
             <Tabs.Panel value="react-window">
-              <ReactWindowTab
-                data={dataSlice}
-                key={renderKey}
-                cols={cols}
-                paddingInline={paddingInline}
-              />
+              <ReactWindowTab {...tableProps} />
             </Tabs.Panel>
             <Tabs.Panel value="tanstack-virtual">
-              <TanstackVirtualTab
-                data={dataSlice}
-                key={renderKey}
-                cols={cols}
-                paddingInline={paddingInline}
-              />
+              <TanstackVirtualTab {...tableProps} />
             </Tabs.Panel>
           </Box>
         </Tabs>
@@ -181,7 +174,5 @@ const cols = [
     align: "left",
   },
 ];
-
-const paddingInline = 5;
 
 export default App;

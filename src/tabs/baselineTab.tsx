@@ -11,7 +11,10 @@ export function BaselineTab({
 }) {
   return (
     <div style={{ overflow: "auto", height: 800 }}>
-      <table>
+      <table style={{
+        tableLayout: "fixed",
+        borderCollapse: "collapse",
+      }}>
         <thead>
           <tr>
             <th
