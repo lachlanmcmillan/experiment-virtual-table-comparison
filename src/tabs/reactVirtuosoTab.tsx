@@ -15,7 +15,7 @@ export function ReactVirtuosoTab({
 }) {
   return (
     <TableVirtuoso
-      style={{ height: 800 }}
+      style={{ height: 800, overscrollBehaviorY: 'none' }}
       data={data}
       fixedHeaderContent={() => (
         <tr style={{ backgroundColor: "white" }}>

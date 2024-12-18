@@ -10,41 +10,48 @@ export function BaselineTab({
   paddingInline: number;
 }) {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th
-            style={{ width: 60, height: 27, textAlign: "right", paddingInline }}
-          >
-            #
-          </th>
-          {cols.map((col) => (
+    <div style={{ overflow: "auto", height: 800 }}>
+      <table>
+        <thead>
+          <tr>
             <th
-              key={col.label}
               style={{
-                width: col.width,
-                minWidth: col.width,
-                textAlign: col.align as any,
+                width: 60,
+                height: 27,
+                textAlign: "right",
                 paddingInline,
               }}
             >
-              {col.label}
+              #
             </th>
+            {cols.map((col) => (
+              <th
+                key={col.label}
+                style={{
+                  width: col.width,
+                  minWidth: col.width,
+                  textAlign: col.align as any,
+                  paddingInline,
+                }}
+              >
+                {col.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => (
+            <Row
+              item={item}
+              key={item.id}
+              index={index}
+              cols={cols}
+              paddingInline={paddingInline}
+            />
           ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item, index) => (
-          <Row
-            item={item}
-            key={item.id}
-            index={index}
-            cols={cols}
-            paddingInline={paddingInline}
-          />
-        ))}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   );
 }
 
