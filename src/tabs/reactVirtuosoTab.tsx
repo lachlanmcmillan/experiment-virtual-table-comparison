@@ -1,8 +1,5 @@
 import { TableVirtuoso } from "react-virtuoso";
 import { MockData } from "../types/MockData";
-import { formatDate, Row } from "../components/Table";
-import { Box } from "@mantine/core";
-import { AircraftTypeBadge } from "../components/AircraftTypeBadge";
 
 export function ReactVirtuosoTab({
   data,
@@ -15,7 +12,7 @@ export function ReactVirtuosoTab({
 }) {
   return (
     <TableVirtuoso
-      style={{ height: 800, overscrollBehaviorY: 'none' }}
+      style={{ height: 800, overscrollBehaviorY: "none", tableLayout: "fixed" }}
       data={data}
       fixedHeaderContent={() => (
         <tr style={{ backgroundColor: "white" }}>
@@ -45,36 +42,6 @@ export function ReactVirtuosoTab({
           ))}
         </tr>
       )}
-      // components={{
-      //   TableHead: ({ style, ...props }) => (
-      //     <thead>
-      //       <tr>
-      //         <th
-      //           style={{
-      //             width: 60,
-      //             height: 27,
-      //             textAlign: "right",
-      //             paddingInline,
-      //           }}
-      //         >
-      //           #
-      //         </th>
-      //         {cols.map((col) => (
-      //           <th
-      //             key={col.label}
-      //             style={{
-      //               width: col.width,
-      //               textAlign: col.align as any,
-      //               paddingInline,
-      //             }}
-      //           >
-      //             {col.label}
-      //           </th>
-      //         ))}
-      //       </tr>
-      //     </thead>
-      //   ),
-      // }}
       itemContent={(index, data) => (
         <>
           <td

@@ -10,7 +10,7 @@ import { AircraftTypeBadge } from "./components/AircraftTypeBadge";
 
 function App() {
   const [renderKey, setRenderKey] = useState(0);
-  const [currentTab, setCurrentTab] = useState<string>("react-virtuoso");
+  const [currentTab, setCurrentTab] = useState<string>("baseline");
   const rowLimitRef = useRef<string>(rowLimitOptions[1].value);
 
   const rerender = () => {
@@ -29,8 +29,8 @@ function App() {
   return (
     <>
       <Box mt="lg" w="100%">
-        <Title order={1}>Experiment Virtual Table Comparison</Title>
-        <Text>This is a comparison of virtual table libraries.</Text>
+        <Title order={1} ta="center">Virtual Table Comparison</Title>
+        <Text ta="center">This is a comparison of virtualization libraries.</Text>
         <Group mt="md" justify="center">
           <Select
             defaultValue={rowLimitRef.current}
@@ -51,7 +51,7 @@ function App() {
             <Tabs.Tab value="baseline">Baseline</Tabs.Tab>
             <Tabs.Tab value="react-window">React Window</Tabs.Tab>
             <Tabs.Tab value="react-virtuoso">React Virtuoso</Tabs.Tab>
-            <Tabs.Tab value="tanstack-table">Tanstack Table</Tabs.Tab>
+            <Tabs.Tab value="tanstack-virtual">Tanstack Virtual</Tabs.Tab>
           </Tabs.List>
           <Box
             mt="lg"
@@ -82,7 +82,7 @@ function App() {
                 paddingInline={paddingInline}
               />
             </Tabs.Panel>
-            <Tabs.Panel value="tanstack-table">
+            <Tabs.Panel value="tanstack-virtual">
               <TanstackVirtualTab
                 data={dataSlice}
                 key={renderKey}

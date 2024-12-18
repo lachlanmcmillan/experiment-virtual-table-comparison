@@ -1,17 +1,22 @@
-import { Box } from "@mantine/core";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";
 import { MockData } from "../types/MockData";
-import { formatDate } from "../components/Table";
-import { AircraftTypeBadge } from "../components/AircraftTypeBadge";
 
-export function TanstackVirtualTab({ data }: { data: MockData[] }) {
+export function TanstackVirtualTab({
+  data,
+  cols,
+  paddingInline,
+}: {
+  data: MockData[];
+  cols: any[];
+  paddingInline: number;
+}) {
   const parentRef = React.useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({
     count: data.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 36,
+    estimateSize: () => 27,
     overscan: 20,
   });
 
@@ -20,36 +25,92 @@ export function TanstackVirtualTab({ data }: { data: MockData[] }) {
       <div
         ref={parentRef}
         className="container"
-        style={{ height: 800, overflow: "auto" }}
+        style={{ height: 800, overflow: "auto", overscrollBehaviorY: "none" }}
       >
-        <table>
-          <thead></thead>
+        <table
+          style={{
+            tableLayout: "fixed",
+            height: virtualizer.getTotalSize(),
+            // width: "100%",
+            position: "relative",
+            borderCollapse: "collapse",
+          }}
+        >
+          <thead>
+            <tr
+              style={{
+                backgroundColor: "white",
+                top: 0,
+                position: "sticky",
+                zIndex: 2,
+              }}
+            >
+              <th
+                style={{
+                  width: 60,
+                  minWidth: 60,
+                  height: 27,
+                  textAlign: "right",
+                  paddingInline,
+                }}
+              >
+                #
+              </th>
+              {cols.map((col) => (
+                <th
+                  key={col.label}
+                  style={{
+                    width: col.width,
+                    minWidth: col.width,
+                    textAlign: col.align as any,
+                    paddingInline,
+                  }}
+                >
+                  {col.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
           <tbody>
-            {virtualizer.getVirtualItems().map((virtualRow, index) => {
+            {virtualizer.getVirtualItems().map((virtualRow) => {
               const item = data[virtualRow.index];
               return (
                 <tr
                   key={item.id}
                   style={{
-                    height: `${virtualRow.size}px`,
-                    transform: `translateY(${
-                      virtualRow.start - index * virtualRow.size
-                    }px)`,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: virtualRow.size,
+                    transform: `translateY(${virtualRow.start + 27}px)`,
                   }}
                 >
-                  <td>{index}</td>
-                  <td>{item.flight_number}</td>
-                  <td>{item.departure_airport_code}</td>
-                  <td>{item.arrival_airport_code}</td>
-                  <td>{formatDate(item.departure_date_time)}</td>
-                  <td>{formatDate(item.arrival_date_time)}</td>
-                  <td>{item.flight_duration_minutes}</td>
-                  <td>{item.airline_name}</td>
-                  <td>
-                    <AircraftTypeBadge language={item.aircraft_type} />
+                  <td
+                    style={{
+                      textAlign: "right",
+                      width: 60,
+                      minWidth: 60,
+                      paddingInline,
+                    }}
+                  >
+                    {virtualRow.index}
                   </td>
-                  <td>{item.passenger_count}</td>
-                  <td>{item.pilot_name}</td>
+                  {cols.map((col) => (
+                    <td
+                      key={col.key}
+                      style={{
+                        width: col.width,
+                        minWidth: col.width,
+                        textAlign: col.align as any,
+                        paddingInline,
+                      }}
+                    >
+                      {col.transform
+                        ? col.transform(item[col.key])
+                        : item[col.key]}
+                    </td>
+                  ))}
                 </tr>
               );
             })}
