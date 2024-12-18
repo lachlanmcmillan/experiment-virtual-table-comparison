@@ -1,6 +1,6 @@
-# experiment-virtual-table-comparison
+# virtual-table-comparison
 
-This project aims to compare the performance of virtual table libraries.
+This experiment aims to compare the performance of virtual table libraries.
 
 - [react-window ](https://github.com/bvaughn/react-window) - [bundlephobia](https://bundlephobia.com/result?p=react-window@2.0.0)
 - [react-virtuoso](https://github.com/petyosi/react-virtuoso) - [bundlephobia](https://bundlephobia.com/result?p=react-virtuoso@3.1.1)
