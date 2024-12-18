@@ -7,6 +7,7 @@ import data from "./MOCK_DATA.json";
 import { useRef, useState } from "react";
 import afterFrame from "afterframe";
 import { AircraftTypeBadge } from "./components/AircraftTypeBadge";
+import { renderTimeStore } from "./store/renderTime";
 
 function App() {
   const [renderKey, setRenderKey] = useState(0);
@@ -20,7 +21,11 @@ function App() {
     setRenderKey(renderKey + 1);
 
     afterFrame(() => {
-      measure.end();
+      const result = measure.end();
+      renderTimeStore.setState({
+        rows: parseInt(rowLimitRef.current),
+        duration: result,
+      });
     });
   };
 
@@ -47,12 +52,13 @@ function App() {
         <Group mt="md" justify="center">
           <Select
             defaultValue={rowLimitRef.current}
-            onChange={(value) =>
-              (rowLimitRef.current = value || rowLimitOptions[0].value)
-            }
+            onChange={(value) => (rowLimitRef.current = value as string)}
             data={rowLimitOptions}
           />
           <Button onClick={rerender}>Rerender</Button>
+        </Group>
+        <Group justify="center" mt="xs">
+          <RenderTimeText />
         </Group>
         <Tabs
           mt="lg"
@@ -90,6 +96,16 @@ function App() {
   );
 }
 
+const RenderTimeText = () => {
+  const result = renderTimeStore.use();
+
+  const text = result ?
+    `Rendered ${result.rows} rows in ${result.duration}ms`
+    : '';
+
+  return <Text h={36} fz="sm">{text}</Text>;
+}
+
 const rowLimitOptions = [1, 100, 1000, data.length].map((item) => ({
   value: item.toString(),
   label: item.toString(),
@@ -106,7 +122,8 @@ function measureInteraction(interactionName: string) {
         interactionName + " start",
         interactionName + " end"
       );
-      console.log(interactionName, Math.round(measure.duration), "ms");
+
+      return measure.duration; 
     },
   };
 }
